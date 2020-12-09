@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+    banco_app:
+        build:
+            context: .
+            dockerfile: Dockerfile_app
+        ports:
+            - "8000:8000"
+        command:
+            sh -c "cd banco && python manage.py runserver 0.0.0.0:8000"
+    recibo_app:
+        build:
+            context: .
+            dockerfile: Dockerfile_app
+        ports:
+            - "8002:8002"
+        command:
+            sh -c "cd recibo && python manage.py runserver 0.0.0.0:8002"
