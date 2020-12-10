@@ -5,15 +5,23 @@ services:
         build:
             context: .
             dockerfile: Dockerfile_app
-        ports:
-            - "8000:8000"
         command:
             sh -c "cd banco && python manage.py runserver 0.0.0.0:8000"
     recibo_app:
         build:
             context: .
             dockerfile: Dockerfile_app
-        ports:
-            - "8002:8002"
         command:
             sh -c "cd recibo && python manage.py runserver 0.0.0.0:8002"
+    mytoxiproxy:
+        image: shopify/toxiproxy
+        ports:
+         - "22220:22220"
+         - "22222:22222"
+         - "8474:8474"
+    mytoxiproxy-configurer:
+        build:
+            context: .
+            dockerfile: Dockerfile-toxiproxy-configurer
+        depends_on:
+            - mytoxiproxy

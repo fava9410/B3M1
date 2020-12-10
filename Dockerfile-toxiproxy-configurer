@@ -1,0 +1,6 @@
+FROM alpine:3.2 
+
+RUN apk update 
+RUN apk upgrade 
+RUN apk add curl bash
+CMD curl -s -XPOST -d '{"name" : "banco", "listen" : "mytoxiproxy:22220", "upstream" : "banco_app:8000"}' http://mytoxiproxy:8474/proxies && curl -s -XPOST -d '{"name" : "recibo", "listen" : "mytoxiproxy:22222", "upstream" : "recibo_app:8002"}' http://mytoxiproxy:8474/proxies
