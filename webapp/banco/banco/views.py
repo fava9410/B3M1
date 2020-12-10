@@ -15,8 +15,8 @@ def debitar(request):
             response = JsonResponse({'error': 'parametros incorrectos'})
             response.status_code = 500
             return response
-        return JsonResponse({'id_transaccion': uuid.uuid4()})
-
+        key = f'{numero_tarjeta}{destino}{valor}'
+        return JsonResponse({'id_transaccion': uuid.uuid5(uuid.NAMESPACE_DNS, key)})
 
     
 def cliente(request, id):    
