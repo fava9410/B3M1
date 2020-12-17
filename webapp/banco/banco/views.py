@@ -12,7 +12,7 @@ def debitar(request):
             destino = data['destino']
             valor = data['valor']
         except:
-            response = JsonResponse({'error': 'parametros incorrectos'})
+            response = JsonResponse({'error': 'Parametros incorrectos'})
             response.status_code = 500
             return response
         key = f'{numero_tarjeta}{destino}{valor}'

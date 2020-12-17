@@ -1,2 +1,5 @@
 __pycache__/
 .vscode/
+envtest/
+student/
+testing_api.py
