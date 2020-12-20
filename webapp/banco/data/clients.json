@@ -1,18 +1,52 @@
 [
     {
         "id": 1,
-        "nombre": "Mariana"
+        "nombre": "Mariana",
+        "numero_tarjeta": "12345"
     },
     {
         "id": 2,
-        "nombre": "Juan"
+        "nombre": "Juan",
+        "numero_tarjeta": "12245"
     },
     {
         "id": 3,
-        "nombre": "Camila"
+        "nombre": "Camila",
+        "numero_tarjeta": "12346"
     },
     {
         "id": 4,
-        "nombre": "Diego"
+        "nombre": "Diego",
+        "numero_tarjeta": "10045"
+    },
+    {
+        "id": 5,
+        "nombre": "Camilo",
+        "numero_tarjeta": "98765"
+    },
+    {
+        "id": 6,
+        "nombre": "Angye",
+        "numero_tarjeta": "76854"
+    },
+    {
+        "id": 7,
+        "nombre": "Diana",
+        "numero_tarjeta": "20190"
+    },
+    {
+        "id": 8,
+        "nombre": "Guillermo",
+        "numero_tarjeta": "77783"
+    },
+    {
+        "id": 9,
+        "nombre": "Naomi",
+        "numero_tarjeta": "29298"
+    },
+    {
+        "id": 10,
+        "nombre": "Fernanda",
+        "numero_tarjeta": "82109"
     }
 ]
