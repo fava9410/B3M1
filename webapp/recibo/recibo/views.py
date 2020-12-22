@@ -12,7 +12,7 @@ def new_qr(request):
             id_evento = data['id_evento']
             id_transaccion = data['id_transaccion']
         except:
-            response = JsonResponse({'error': 'parametros incorrectos'})
+            response = JsonResponse({'error': 'Parametros incorrectos'})
             response.status_code = 500
             return response
         

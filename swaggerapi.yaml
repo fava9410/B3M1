@@ -1,0 +1,221 @@
+openapi: 3.0.1
+info:
+  title: Practica 1
+  description: 'This is a sample server Petstore server.  You can find out more about     Swagger
+    at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For
+    this sample, you can use the api key `special-key` to test the authorization     filters.'
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+tags:
+- name: Generador
+- name: Banco
+- name: Estudiante
+paths:
+  /api/generador/new_qr/:
+    post:
+      tags:
+      - Generador
+      summary: Returns a qr base64-image according to an user id and an event id
+      servers:
+      - url: http://localhost:22222
+        description: generador url
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                id_cliente:
+                  type: integer
+                id_evento:
+                  type: integer
+                id_transaccion:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: user and event were found in the db
+          content:
+            plain/text:
+              schema:
+                type: string
+        500:
+          $ref: '#/components/responses/Parameters'
+  /api/banco/cliente/{id}:
+    get:
+      tags:
+      - Banco
+      summary: Returns user's information
+      servers:
+      - url: http://localhost:22220
+        description: bank url
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: client was found successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  nombre:
+                    type: string
+                  numero_tarjeta:
+                    type: string
+        404:
+          $ref: '#/components/responses/NotFound'
+  /api/banco/debitar/:
+    post:
+      tags:
+      - Banco
+      summary: Simulates a transaction
+      servers:
+      - url: http://localhost:22220
+        description: bank url
+      requestBody:
+        description: id_client and numero_tarjeta were found
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                id_cliente:
+                  type: integer
+                numero_tarjeta:
+                  type: string
+                id_evento:
+                  type: integer
+                valor:
+                  type: integer
+        required: true
+      responses:
+        200:
+          description: transaction was successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id_transaccion:
+                    type: string
+        500:
+          description: A JSON object containing pet information
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error500Parameters'
+                  - $ref: '#/components/schemas/Error500ParametersValue'
+      #x-codegen-request-body-name: body
+  /student_api/comprar/:
+    post:
+      tags:
+      - Estudiante
+      summary: Student's API that consumes Bank's API
+      servers:
+      - url: http://localhost:22225
+        description: student url
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                id_cliente:
+                  type: integer
+                numero_tarjeta:
+                  type: string
+                id_evento:
+                  type: integer
+                valor:
+                  type: integer
+        required: true
+      responses:
+        200:
+          description: after validate parameters with Bank's API, return a base64
+            qr code using generator's API
+          content:
+            plain/text:
+              schema:
+                type: string
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          description: A JSON object containing pet information
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error500Parameters'
+                  - $ref: '#/components/schemas/Error500ParametersValue'
+        504:
+          description: one of the services is failing, please try later
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/BancoTimeout'
+                  - $ref: '#/components/schemas/GeneradorTimeout'
+
+
+components:
+  responses:
+    NotFound:
+      description: The client was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+            example:
+              error: No existe el cliente
+    Parameters:
+      description: any of the parameters is missing
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error500Parameters'
+  
+  schemas:
+    Error500Parameters:
+      type: object
+      properties:
+        error:
+          type: string
+      example:
+        error: Parametros incorrectos
+    Error500ParametersValue:
+      type: object
+      properties:
+        error:
+          type: string
+      example:
+        error: id_cliente y/o numero de tarjeta incorrectos
+    BancoTimeout:
+      type: object
+      properties:
+        error:
+          type: string
+      example:
+        error: El servicio bancario no esta disponible, por favor intente mas tarde
+    GeneradorTimeout:
+      type: object
+      properties:
+        error:
+          type: string
+      example:
+        error: El servicio generador no esta disponible, por favor intente mas tarde
